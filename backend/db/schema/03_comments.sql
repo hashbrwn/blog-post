@@ -1,9 +1,10 @@
+DROP TABLE IF EXISTS Comments CASCADE;
 CREATE TABLE Comments (
     CommentID INT PRIMARY KEY,
-    UserID INT,
-    PostID INT,
+    CommentUserID INT,
+    CommentPostID INT,
     Text TEXT NOT NULL,
     CreationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (UserID) REFERENCES Users(UserID),
-    FOREIGN KEY (PostID) REFERENCES BlogPosts(PostID)
+    FOREIGN KEY (CommentUserID) REFERENCES Users(Id),
+    FOREIGN KEY (CommentPostID) REFERENCES BlogPosts(PostID)
 );
