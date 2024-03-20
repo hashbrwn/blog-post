@@ -1,0 +1,9 @@
+CREATE TABLE Comments (
+    CommentID INT PRIMARY KEY,
+    UserID INT,
+    PostID INT,
+    Text TEXT NOT NULL,
+    CreationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    FOREIGN KEY (PostID) REFERENCES BlogPosts(PostID)
+);
