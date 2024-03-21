@@ -25,14 +25,29 @@ const getOnlyOneUser = (userId) => {
 
 // REGISTER NEW USER
 
-const createUser = (userName,email,password)=>{
-  const newUser = `
-  INSERT INTO Users (Username, Email, Password)
-  VALUES($1, $2, $3)
-  RETURNING *;
+const createUser = (userName, email, password) => {
+  const checkUserQuery = `
+    SELECT * FROM Users
+    WHERE Email = $1;
   `;
-  return db.query(newUser,[userName,email,password]);
 
+  const insertNewUser = `
+    INSERT INTO Users (Username, Email, Password)
+    VALUES ($1, $2, $3)
+    RETURNING *;
+  `;
+
+  // Check if user with the same email already exists
+  return db.query(checkUserQuery, [email])
+    .then((result) => {
+      if (result.rows.length > 0) {
+        // User with the same email already exists, handle accordingly (throw error, return existing user, etc.)
+        throw new Error('User with the same email already exists');
+      } else {
+        // User does not exist, insert the new user
+        return db.query(insertNewUser, [userName, email, password]);
+      }
+    });
 };
 
 module.exports = { getUsers,getOnlyOneUser,createUser };

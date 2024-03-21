@@ -5,9 +5,11 @@ require('dotenv').config();
 const sassMiddleware = require('./lib/sass-middleware');
 const express = require('express');
 const morgan = require('morgan');
+const bodyParser = require('body-parser');
 
 const PORT = process.env.PORT || 8080;
 const app = express();
+app.use(bodyParser.json());
 
 app.set('view engine', 'ejs');
 
@@ -25,7 +27,6 @@ app.use(
   })
 );
 app.use(express.static('public'));
-
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
 const userApiRoutes = require('./routes/users-api');

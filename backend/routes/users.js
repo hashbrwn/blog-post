@@ -17,15 +17,13 @@ router.get('/', (req, res) => {
     });
 });
 router.post('/register', (req, res) => {
-  // Hardcoded data for testing
-  const userName = 'loopfinity';
-  const email = "testing@gmail.com";
-  const password = 'test12346';
-
+  console.log('req.body',req.body);
+  const { userName, email, password } = req.body;
+  console.log('User details -->:',userName, email,password);
   // Assuming you have a function createUser that inserts a user into the database
   userinfo.createUser(userName, email, password)
     .then((result) => {
-      console.log(result.rows[0])
+      // console.log(result.rows[0])
       // Assuming createUser returns the newly created user
       const createdUser = result.rows[0];
       // Send a response with the created user
