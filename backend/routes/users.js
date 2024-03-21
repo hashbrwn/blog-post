@@ -17,14 +17,12 @@ router.get('/', (req, res) => {
     });
 });
 router.post('/register', (req, res) => {
-  console.log('req.body',req.body);
+
   const { userName, email, password } = req.body;
-  console.log('User details -->:',userName, email,password);
-  // Assuming you have a function createUser that inserts a user into the database
+
   userinfo.createUser(userName, email, password)
     .then((result) => {
-      // console.log(result.rows[0])
-      // Assuming createUser returns the newly created user
+      //returns the newly created user
       const createdUser = result.rows[0];
       // Send a response with the created user
       res.status(201).json({ message: "User created successfully", user: createdUser });
@@ -33,6 +31,22 @@ router.post('/register', (req, res) => {
       // If an error occurs, send an error response
       console.error("Error creating user:", error);
       res.status(500).json({ error: "Failed to create user" });
+    });
+});
+router.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  console.log('User login details:', email, password);
+
+  // Assuming you have a function loginUser that authenticates a user
+  userinfo.loginUser(email, password)
+    .then((user) => {
+      // User authenticated successfully, send a response with user details
+      res.status(200).json({ message: "User logged in successfully", user });
+    })
+    .catch((error) => {
+      // If an error occurs (e.g., invalid email or password), send a 401 Unauthorized response
+      console.error("Error logging in:", error);
+      res.status(401).json({ error: "Invalid email or password" });
     });
 });
 

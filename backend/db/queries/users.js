@@ -1,11 +1,5 @@
 const db = require('../connection');
 
-// const getUsers = () => {
-//   return db.query('SELECT * FROM users;')
-//     .then(data => {
-//       return data.rows;
-//     });
-// };
  // BROWSE - display all users;
  const getUsers = () => {
   const allUsers = `
@@ -41,7 +35,7 @@ const createUser = (userName, email, password) => {
   return db.query(checkUserQuery, [email])
     .then((result) => {
       if (result.rows.length > 0) {
-        // User with the same email already exists, handle accordingly (throw error, return existing user, etc.)
+        // User with the same email already exists, throw error
         throw new Error('User with the same email already exists');
       } else {
         // User does not exist, insert the new user
@@ -49,5 +43,23 @@ const createUser = (userName, email, password) => {
       }
     });
 };
+// function loginUser that authenticates a user
+const loginUser = (email, password) => {
+  const loginQuery = `
+    SELECT * FROM Users
+    WHERE Email = $1 AND Password = $2;
+  `;
 
-module.exports = { getUsers,getOnlyOneUser,createUser };
+  return db.query(loginQuery, [email, password])
+    .then((result) => {
+      if (result.rows.length === 1) {
+        // User with the provided email and password exists
+        return result.rows[0]; // Return the user details
+      } else {
+        // No user found with the provided email and password
+        throw new Error('Invalid email or password');
+      }
+    });
+};
+
+module.exports = { getUsers,getOnlyOneUser,createUser,loginUser};

@@ -10,7 +10,6 @@ const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 8080;
 const app = express();
 app.use(bodyParser.json());
-
 app.set('view engine', 'ejs');
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
@@ -28,7 +27,7 @@ app.use(
 );
 app.use(express.static('public'));
 // Separated Routes for each Resource
-// Note: Feel free to replace the example routes below with your own
+
 const userApiRoutes = require('./routes/users-api');
 const widgetApiRoutes = require('./routes/widgets-api');
 const usersRoutes = require('./routes/users');
