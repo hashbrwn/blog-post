@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS Comments CASCADE;
 CREATE TABLE Comments (
-    CommentID INT PRIMARY KEY,
+    CommentID SERIAL PRIMARY KEY NOT NULL,
     CommentUserID INT,
     CommentPostID INT,
     Text TEXT NOT NULL,
