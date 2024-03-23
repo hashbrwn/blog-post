@@ -61,5 +61,21 @@ const loginUser = (email, password) => {
       }
     });
 };
+// Function to retrieve a list of all published blog posts
+const getAllPosts = () => {
+  const query = `
+    SELECT Title,Content FROM BlogPosts
+    WHERE PublicationDate >= NOW();
+  `;
+  return db.query(query);
+};
 
-module.exports = { getUsers,getOnlyOneUser,createUser,loginUser};
+//retrieve the full content of a specific blog post, including comments
+const getPostById = (postId) => {
+  const query = `
+    SELECT * FROM BlogPosts
+    WHERE PostID = $1;
+  `;
+  return db.query(query, [postId]);
+};
+module.exports = { getUsers,getOnlyOneUser,createUser,loginUser,getAllPosts,getPostById};

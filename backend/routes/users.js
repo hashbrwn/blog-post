@@ -36,8 +36,7 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
   const { email, password } = req.body;
   console.log('User login details:', email, password);
-
-  // Assuming you have a function loginUser that authenticates a user
+  
   userinfo.loginUser(email, password)
     .then((user) => {
       // User authenticated successfully, send a response with user details
@@ -49,5 +48,35 @@ router.post('/login', (req, res) => {
       res.status(401).json({ error: "Invalid email or password" });
     });
 });
+
+router.get('/posts', (req, res) => {
+    console.log('HELLO, THIS IS FOR TESTING ONLY !');
+  userinfo.getAllPosts()
+    .then((result) => {
+      res.status(200).json(result.rows);
+    })
+    .catch((error) => {
+      console.error("Error retrieving blog posts:", error);
+      res.status(500).json({ error: "Failed to retrieve blog posts" });
+    });
+});
+
+router.get('/posts/:postId', (req, res) => {
+  const postId = req.params.postId;
+  userinfo.getPostById(postId)
+    .then((result) => {
+      if (result.rows.length === 0) {
+        res.status(404).json({ error: "Post not found" });
+      } else {
+        res.status(200).json(result.rows[0]);
+      }
+    })
+    .catch((error) => {
+      console.error("Error retrieving blog post:", error);
+      res.status(500).json({ error: "Failed to retrieve blog post" });
+    });
+});
+
+
 
 module.exports = router;
