@@ -36,7 +36,7 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
   const { email, password } = req.body;
   console.log('User login details:', email, password);
-  
+
   userinfo.loginUser(email, password)
     .then((user) => {
       // User authenticated successfully, send a response with user details
@@ -74,6 +74,18 @@ router.get('/posts/:postId', (req, res) => {
     .catch((error) => {
       console.error("Error retrieving blog post:", error);
       res.status(500).json({ error: "Failed to retrieve blog post" });
+    });
+});
+router.post('/createPost', (req, res) => {
+ 
+  const { BlogPostUserID, Title, Content, Tags } = req.body;
+  userinfo.createPost(BlogPostUserID, Title, Content, Tags)
+    .then((result) => {
+      res.status(201).json(result.rows[0]);
+    })
+    .catch((error) => {
+      console.error("Error creating blog post:", error);
+      res.status(500).json({ error: "Failed to create blog post" });
     });
 });
 

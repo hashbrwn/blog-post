@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS BlogPosts CASCADE;
 CREATE TABLE BlogPosts (
     PostID SERIAL PRIMARY KEY NOT NULL,
-    BlogPostUserID INT,
+    BlogPostUserID int  NOT NULL,
     Title VARCHAR(255) NOT NULL,
     Content TEXT NOT NULL,
     Tags VARCHAR(255),
