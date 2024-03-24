@@ -88,7 +88,24 @@ router.post('/createPost', (req, res) => {
       res.status(500).json({ error: "Failed to create blog post" });
     });
 });
-
+// Update a blog post
+router.post('/Posts/:postId/update', (req, res) => {
+  console.log('testing ....');
+  const postId = req.params.postId;
+  const { Title, Content, Tags } = req.body;
+  userinfo.updatePost(postId, Title, Content, Tags)
+    .then((result) => {
+      if (result.rows.length === 0) {
+        res.status(404).json({ error: "Post not found" });
+      } else {
+        res.status(200).json(result.rows[0]);
+      }
+    })
+    .catch((error) => {
+      console.error("Error updating blog post:", error);
+      res.status(500).json({ error: "Failed to update blog post" });
+    });
+});
 
 
 module.exports = router;
