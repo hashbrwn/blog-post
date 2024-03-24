@@ -98,14 +98,14 @@ const updatePost = (postId, Title, Content, Tags) => {
   return db.query(query, [Title, Content, Tags, postId]);
 };
 // Function to delete an existing blog post
-// const deletePost = (postId) => {
-//   const query = `
-//     DELETE FROM BlogPosts
-//     WHERE PostID = $1
-//     RETURNING *;
-//   `;
-//   return db.query(query, [postId]);
-// };
+const deletePost = (postId) => {
+  const query = `
+    DELETE FROM BlogPosts
+    WHERE PostID = $1
+    RETURNING *;
+  `;
+  return db.query(query, [postId]);
+};
 module.exports = { 
   getUsers,getOnlyOneUser,
-  createUser,loginUser,getAllPosts,getPostById,createPost,updatePost};
+  createUser,loginUser,getAllPosts,getPostById,createPost,updatePost,deletePost};

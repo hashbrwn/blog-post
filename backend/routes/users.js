@@ -89,8 +89,7 @@ router.post('/createPost', (req, res) => {
     });
 });
 // Update a blog post
-router.post('/Posts/:postId/update', (req, res) => {
-  console.log('testing ....');
+router.post('/posts/:postId/update', (req, res) => {
   const postId = req.params.postId;
   const { Title, Content, Tags } = req.body;
   userinfo.updatePost(postId, Title, Content, Tags)
@@ -106,6 +105,21 @@ router.post('/Posts/:postId/update', (req, res) => {
       res.status(500).json({ error: "Failed to update blog post" });
     });
 });
-
+// Delete a blog post
+router.post('/posts/:postId/delete', (req, res) => {
+  const postId = req.params.postId;
+  userinfo.deletePost(postId)
+    .then((result) => {
+      if (result.rows.length === 0) {
+        res.status(404).json({ error: "Post not found" });
+      } else {
+        res.status(200).json({ message: "Post deleted successfully" });
+      }
+    })
+    .catch((error) => {
+      console.error("Error deleting blog post:", error);
+      res.status(500).json({ error: "Failed to delete blog post" });
+    });
+});
 
 module.exports = router;
