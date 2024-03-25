@@ -47,7 +47,7 @@ const createUser = (userName, email, password) => {
 const loginUser = (email, password) => {
   const loginQuery = `
     SELECT * FROM Users
-    WHERE Email = $1 AND Password = $2;
+    WHERE "Email" = $1 AND "Password" = $2;
   `;
 
   return db.query(loginQuery, [email, password])
