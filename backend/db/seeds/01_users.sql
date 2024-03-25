@@ -1,5 +1,5 @@
--- Users table seeds here 
-INSERT INTO Users (Id, Username, Email, Password) VALUES
-    (1, 'Abdi', 'Abdi@example.com', 'password123'),
-    (2, 'Alvin', 'Alvin@example.com', 'securepass'),
-    (3, 'Yasin', 'Yasin@example.com', 'p@ssw0rd');
+-- Users table seeds here
+INSERT INTO Users ( Username, Email, Password) VALUES
+    ( 'Abdi', 'Abdi@example.com', 'password123'),
+    ( 'Alvin', 'Alvin@example.com', 'securepass'),
+    ( 'Yasin', 'Yasin@example.com', 'p@ssw0rd');

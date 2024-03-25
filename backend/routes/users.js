@@ -44,8 +44,8 @@ router.post('/login', (req, res) => {
     })
     .catch((error) => {
       // If an error occurs (e.g., invalid email or password), send a 401 Unauthorized response
-      console.error("Error logging in:", error);
-      res.status(401).json({ error: "Invalid email or password" });
+      console.error("Error logging in:", error.message);
+      res.status(401).json({ error: error.message });
     });
 });
 
@@ -77,7 +77,7 @@ router.get('/posts/:postId', (req, res) => {
     });
 });
 router.post('/createPost', (req, res) => {
- 
+
   const { BlogPostUserID, Title, Content, Tags } = req.body;
   userinfo.createPost(BlogPostUserID, Title, Content, Tags)
     .then((result) => {

@@ -31,6 +31,7 @@ const createUser = (userName, email, password) => {
     RETURNING *;
   `;
 
+  console.log("++++++++++++", userName, email, password)
   // Check if user with the same email already exists
   return db.query(checkUserQuery, [email])
     .then((result) => {
@@ -47,11 +48,23 @@ const createUser = (userName, email, password) => {
 const loginUser = (email, password) => {
   const loginQuery = `
     SELECT * FROM Users
-    WHERE "Email" = $1 AND "Password" = $2;
+    WHERE email = $1 ;
   `;
+  console.log("======", email, loginQuery)
 
-  return db.query(loginQuery, [email, password])
+  return db.query(loginQuery, [email])
     .then((result) => {
+      console.log("$$$$$ ", result.rows)
+      if ( result.rows.length === 0 ) {
+        throw new Error('email does not exist');
+      }
+
+      const user= result.rows[0]
+      if ( user.password !== password ) {
+        throw new Error('invalid password please try again');
+      }
+
+      return result.rows[0];
       if (result.rows.length === 1) {
         // User with the provided email and password exists
         return result.rows[0]; // Return the user details
@@ -106,6 +119,6 @@ const deletePost = (postId) => {
   `;
   return db.query(query, [postId]);
 };
-module.exports = { 
+module.exports = {
   getUsers,getOnlyOneUser,
   createUser,loginUser,getAllPosts,getPostById,createPost,updatePost,deletePost};
