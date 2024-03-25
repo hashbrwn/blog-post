@@ -47,20 +47,27 @@ const createUser = (userName, email, password) => {
 const loginUser = (email, password) => {
   const loginQuery = `
     SELECT * FROM Users
-    WHERE Email = $1 AND Password = $2;
+    WHERE email = $1 ;
   `;
+  console.log("======", email, loginQuery)
 
-  return db.query(loginQuery, [email, password])
+  return db.query(loginQuery, [email])
     .then((result) => {
-      if (result.rows.length === 1) {
-        // User with the provided email and password exists
-        return result.rows[0]; // Return the user details
-      } else {
-        // No user found with the provided email and password
-        throw new Error('Invalid email or password');
+      console.log("$$$$$ ", result.rows)
+      if ( result.rows.length === 0 ) {
+        throw new Error('email does not exist');
       }
+
+      const user= result.rows[0]
+      if ( user.password !== password ) {
+        throw new Error('invalid password please try again');
+      }
+
+      return result.rows[0];
+     
     });
 };
+
 // Function to retrieve a list of all published blog posts
 const getAllPosts = () => {
   const query = `
@@ -106,6 +113,19 @@ const deletePost = (postId) => {
   `;
   return db.query(query, [postId]);
 };
+// Function to retrieve all comments for a specific blog post
+const getAllCommentsForPost = (postId) => {
+  const query = `
+    SELECT * FROM Comments
+    WHERE CommentPostID = $1;
+  `;
+  return db.query(query, [postId]);
+};
+// Function to retrieve a specific comment by its ID
+
 module.exports = { 
   getUsers,getOnlyOneUser,
-  createUser,loginUser,getAllPosts,getPostById,createPost,updatePost,deletePost};
+  createUser,loginUser,getAllPosts,
+  getPostById,createPost,
+  updatePost,deletePost,
+  getAllCommentsForPost};

@@ -35,6 +35,7 @@ router.post('/register', (req, res) => {
 });
 router.post('/login', (req, res) => {
   const { email, password } = req.body;
+  //print user infor for testing purposes;
   console.log('User login details:', email, password);
 
   userinfo.loginUser(email, password)
@@ -44,13 +45,12 @@ router.post('/login', (req, res) => {
     })
     .catch((error) => {
       // If an error occurs (e.g., invalid email or password), send a 401 Unauthorized response
-      console.error("Error logging in:", error);
-      res.status(401).json({ error: "Invalid email or password" });
+      console.error("Error logging in:", error.message);
+      res.status(401).json({ error: error.message });
     });
 });
 
 router.get('/posts', (req, res) => {
-    console.log('HELLO, THIS IS FOR TESTING ONLY !');
   userinfo.getAllPosts()
     .then((result) => {
       res.status(200).json(result.rows);
@@ -121,5 +121,19 @@ router.post('/posts/:postId/delete', (req, res) => {
       res.status(500).json({ error: "Failed to delete blog post" });
     });
 });
+
+// Define the endpoint
+router.get('/comments/:postId', (req, res) => {
+  const postId = req.params.postId;
+  userinfo.getAllCommentsForPost(postId)
+    .then((result) => {
+      res.status(200).json(result.rows);
+    })
+    .catch((error) => {
+      console.error("Error retrieving comments:", error);
+      res.status(500).json({ error: "Failed to retrieve comments" });
+    });
+});
+
 
 module.exports = router;
