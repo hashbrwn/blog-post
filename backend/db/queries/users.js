@@ -61,5 +61,51 @@ const loginUser = (email, password) => {
       }
     });
 };
+// Function to retrieve a list of all published blog posts
+const getAllPosts = () => {
+  const query = `
+    SELECT Title,Content FROM BlogPosts
+    WHERE PublicationDate >= NOW();
+  `;
+  return db.query(query);
+};
 
-module.exports = { getUsers,getOnlyOneUser,createUser,loginUser};
+//retrieve the full content of a specific blog post, including comments
+const getPostById = (postId) => {
+  const query = `
+    SELECT * FROM BlogPosts
+    WHERE PostID = $1;
+  `;
+  return db.query(query, [postId]);
+};
+// Function to create a new blog post
+const createPost = (BlogPostUserID, Title, Content, Tags) => {
+  const query = `
+    INSERT INTO BlogPosts (BlogPostUserID, Title, Content, Tags)
+    VALUES ($1, $2, $3, $4)
+    RETURNING *;
+  `;
+  return db.query(query, [BlogPostUserID, Title, Content, Tags]);
+};
+// Function to update an existing blog post
+const updatePost = (postId, Title, Content, Tags) => {
+  const query = `
+    UPDATE BlogPosts
+    SET Title = $1, Content = $2, Tags = $3
+    WHERE PostID = $4
+    RETURNING *;
+  `;
+  return db.query(query, [Title, Content, Tags, postId]);
+};
+// Function to delete an existing blog post
+const deletePost = (postId) => {
+  const query = `
+    DELETE FROM BlogPosts
+    WHERE PostID = $1
+    RETURNING *;
+  `;
+  return db.query(query, [postId]);
+};
+module.exports = { 
+  getUsers,getOnlyOneUser,
+  createUser,loginUser,getAllPosts,getPostById,createPost,updatePost,deletePost};

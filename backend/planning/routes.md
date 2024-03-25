@@ -12,6 +12,6 @@ DELETE
 
 # User Authentication(users)
 LOGIN
-- POST /api/login                  <!-- Authenticate a user and generate a session token -->
+- POST /api/login                  <!-- Authenticate a user and generate a session token --> <!-- Done✅✅ -->
 REGISTER
-- POST /api/register               <!-- Register a new user account -->
+- POST /api/register               <!-- Register a new user account --> <!-- Done✅✅ -->

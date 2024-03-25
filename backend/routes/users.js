@@ -37,7 +37,6 @@ router.post('/login', (req, res) => {
   const { email, password } = req.body;
   console.log('User login details:', email, password);
 
-  // Assuming you have a function loginUser that authenticates a user
   userinfo.loginUser(email, password)
     .then((user) => {
       // User authenticated successfully, send a response with user details
@@ -47,6 +46,79 @@ router.post('/login', (req, res) => {
       // If an error occurs (e.g., invalid email or password), send a 401 Unauthorized response
       console.error("Error logging in:", error);
       res.status(401).json({ error: "Invalid email or password" });
+    });
+});
+
+router.get('/posts', (req, res) => {
+    console.log('HELLO, THIS IS FOR TESTING ONLY !');
+  userinfo.getAllPosts()
+    .then((result) => {
+      res.status(200).json(result.rows);
+    })
+    .catch((error) => {
+      console.error("Error retrieving blog posts:", error);
+      res.status(500).json({ error: "Failed to retrieve blog posts" });
+    });
+});
+
+router.get('/posts/:postId', (req, res) => {
+  const postId = req.params.postId;
+  userinfo.getPostById(postId)
+    .then((result) => {
+      if (result.rows.length === 0) {
+        res.status(404).json({ error: "Post not found" });
+      } else {
+        res.status(200).json(result.rows[0]);
+      }
+    })
+    .catch((error) => {
+      console.error("Error retrieving blog post:", error);
+      res.status(500).json({ error: "Failed to retrieve blog post" });
+    });
+});
+router.post('/createPost', (req, res) => {
+ 
+  const { BlogPostUserID, Title, Content, Tags } = req.body;
+  userinfo.createPost(BlogPostUserID, Title, Content, Tags)
+    .then((result) => {
+      res.status(201).json(result.rows[0]);
+    })
+    .catch((error) => {
+      console.error("Error creating blog post:", error);
+      res.status(500).json({ error: "Failed to create blog post" });
+    });
+});
+// Update a blog post
+router.post('/posts/:postId/update', (req, res) => {
+  const postId = req.params.postId;
+  const { Title, Content, Tags } = req.body;
+  userinfo.updatePost(postId, Title, Content, Tags)
+    .then((result) => {
+      if (result.rows.length === 0) {
+        res.status(404).json({ error: "Post not found" });
+      } else {
+        res.status(200).json(result.rows[0]);
+      }
+    })
+    .catch((error) => {
+      console.error("Error updating blog post:", error);
+      res.status(500).json({ error: "Failed to update blog post" });
+    });
+});
+// Delete a blog post
+router.post('/posts/:postId/delete', (req, res) => {
+  const postId = req.params.postId;
+  userinfo.deletePost(postId)
+    .then((result) => {
+      if (result.rows.length === 0) {
+        res.status(404).json({ error: "Post not found" });
+      } else {
+        res.status(200).json({ message: "Post deleted successfully" });
+      }
+    })
+    .catch((error) => {
+      console.error("Error deleting blog post:", error);
+      res.status(500).json({ error: "Failed to delete blog post" });
     });
 });
 
