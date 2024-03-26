@@ -140,30 +140,11 @@ const createComment = (CommentUserID, CommentPostID, Text) => {
   return db.query(query, [CommentUserID, CommentPostID, Text]);
 };
 
-// Function to update an existing comment
-const updateComment = (commentId, Text) => {
-  const query = `
-    UPDATE Comments
-    SET Text = $1
-    WHERE CommentID = $2
-    RETURNING *;
-  `;
-  return db.query(query, [Text, commentId]);
-};
 
-// Function to delete an existing comment
-const deleteComment = (commentId) => {
-  const query = `
-    DELETE FROM Comments
-    WHERE CommentID = $1
-    RETURNING *;
-  `;
-  return db.query(query, [commentId]);
-};
 module.exports = { 
   getUsers,getOnlyOneUser,
   createUser,loginUser,getAllPosts,
   getPostById,createPost,
   updatePost,deletePost,
   getAllCommentsForPost,getCommentById,createComment,
-  updateComment,deleteComment};
+  };
