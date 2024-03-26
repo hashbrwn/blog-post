@@ -35,20 +35,20 @@ function Registration() {
       <h2>Register</h2>
       <form onSubmit={handleRegister}>
         <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
           <label>Username:</label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -64,11 +64,12 @@ function Registration() {
         <button type="submit">Register</button>
         {errorMessage && <p>{errorMessage}</p>}
         <p>
-  Already have an account? <Link to="/">Log in here</Link>.
-</p>
+          Already have an account? <Link to="/">Log in here</Link>.
+        </p>
       </form>
     </div>
   );
+
 }
 
 export default Registration;
