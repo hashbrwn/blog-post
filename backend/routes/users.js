@@ -150,6 +150,41 @@ router.post('/comments', (req, res) => {
       res.status(500).json({ error: 'Failed to create comment' });
     });
 });
+// Endpoint to handle updating an existing comment
+router.post('/comments/:commentId/update', (req, res) => {
+  const { commentId } = req.params;
+  const { Text } = req.body;
+
+  // Call the updateComment function
+  userinfo.updateComment(commentId, Text)
+    .then(result => {
+      // Send the updated comment as response
+      res.status(200).json(result.rows[0]);
+    })
+    .catch(error => {
+      // If an error occurs, send an error response
+      console.error('Error updating comment:', error);
+      res.status(500).json({ error: 'Failed to update comment' });
+    });
+});
+
+// Endpoint to handle deleting an existing comment
+router.post('/comments/:commentId/delete', (req, res) => {
+  const { commentId } = req.params;
+
+  // Call the deleteComment function
+  userinfo.deleteComment(commentId)
+    .then(result => {
+      // Send the deleted comment as response
+      res.status(200).json(result.rows[0]);
+    })
+    .catch(error => {
+      // If an error occurs, send an error response
+      console.error('Error deleting comment:', error);
+      res.status(500).json({ error: 'Failed to delete comment' });
+    });
+});
+
 
 
 module.exports = router;
