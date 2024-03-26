@@ -122,10 +122,48 @@ const getAllCommentsForPost = (postId) => {
   return db.query(query, [postId]);
 };
 // Function to retrieve a specific comment by its ID
+const getCommentById = (commentId) => {
+  const query = `
+    SELECT * FROM Comments
+    WHERE CommentID = $1;
+  `;
+  return db.query(query, [commentId]);
+};
 
+// Function to create a new comment
+const createComment = (CommentUserID, CommentPostID, Text) => {
+  const query = `
+    INSERT INTO Comments (CommentUserID, CommentPostID, Text)
+    VALUES ($1, $2, $3)
+    RETURNING *;
+  `;
+  return db.query(query, [CommentUserID, CommentPostID, Text]);
+};
+
+// Function to update an existing comment
+const updateComment = (commentId, Text) => {
+  const query = `
+    UPDATE Comments
+    SET Text = $1
+    WHERE CommentID = $2
+    RETURNING *;
+  `;
+  return db.query(query, [Text, commentId]);
+};
+
+// Function to delete an existing comment
+const deleteComment = (commentId) => {
+  const query = `
+    DELETE FROM Comments
+    WHERE CommentID = $1
+    RETURNING *;
+  `;
+  return db.query(query, [commentId]);
+};
 module.exports = { 
   getUsers,getOnlyOneUser,
   createUser,loginUser,getAllPosts,
   getPostById,createPost,
   updatePost,deletePost,
-  getAllCommentsForPost};
+  getAllCommentsForPost,getCommentById,createComment,
+  updateComment,deleteComment};

@@ -122,7 +122,7 @@ router.post('/posts/:postId/delete', (req, res) => {
     });
 });
 
-// Define the endpoint
+// Endpoint to handle retrieveing  commentById
 router.get('/comments/:postId', (req, res) => {
   const postId = req.params.postId;
   userinfo.getAllCommentsForPost(postId)
@@ -132,6 +132,22 @@ router.get('/comments/:postId', (req, res) => {
     .catch((error) => {
       console.error("Error retrieving comments:", error);
       res.status(500).json({ error: "Failed to retrieve comments" });
+    });
+});
+// Endpoint to handle creating a new comment
+router.post('/comments', (req, res) => {
+  const { CommentUserID, CommentPostID, Text } = req.body;
+
+  // Call the createComment function
+  userinfo.createComment(CommentUserID, CommentPostID, Text)
+    .then(result => {
+      // Send the newly created comment as response
+      res.status(201).json(result.rows[0]);
+    })
+    .catch(error => {
+      // If an error occurs, send an error response
+      console.error('Error creating comment:', error);
+      res.status(500).json({ error: 'Failed to create comment' });
     });
 });
 
