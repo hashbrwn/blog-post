@@ -35,9 +35,3 @@ DELETE
 
 # register newUser
 curl -X POST   -H "Content-Type: application/json"   -d '{"userName":"Testing1", "email":"testing1@example.com", "password":"123456"}'   http://localhost:8080/users/register
-/* 
-
-STRIPE_PUBLISHABLE_KEY=pk_test_51OrLvFHPihFxhX5eEljZRInx2VhJKYzUeDOgyurSjrUAgdkQGSSbFOBePamueGP54UWHPlHt7JipmFZUpQ5eX3ys00oqGGxxQv
-STRIPE_SECRET_KEY=sk_test_51OrLvFHPihFxhX5eexlC2m6VNiYEeLMLwjoYNYFZDIF7YHspvVRthIQ1m5bY6eV2eUL59fQwD9SQA8yLY4JB6vLP00TY1ugUtV
-
-*/
