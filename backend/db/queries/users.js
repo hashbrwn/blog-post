@@ -49,11 +49,11 @@ const loginUser = (email, password) => {
     SELECT * FROM Users
     WHERE email = $1 ;
   `;
-  console.log("======", email, loginQuery)
+  // console.log("======", email, loginQuery)
 
   return db.query(loginQuery, [email])
     .then((result) => {
-      console.log("$$$$$ ", result.rows)
+      // console.log("$$$$$ ", result.rows)
       if ( result.rows.length === 0 ) {
         throw new Error('email does not exist');
       }
@@ -69,22 +69,51 @@ const loginUser = (email, password) => {
 };
 
 // Function to retrieve a list of all published blog posts
-const getAllPosts = () => {
+// WHERE PublicationDate <= NOW();
+// const getAllPosts = () => {
+//   const query = `
+//     SELECT Title,Content FROM BlogPosts;
+//   `;
+//   return db.query(query);
+// };
+const getAllPostsWithComments = () => {
   const query = `
-    SELECT Title,Content FROM BlogPosts
-    WHERE PublicationDate >= NOW();
+    SELECT 
+      bp.Title AS PostTitle,
+      bp.Content AS PostContent,
+      c.Text AS CommentText
+    FROM 
+      BlogPosts bp
+    LEFT JOIN 
+      Comments c ON bp.PostID = c.CommentPostID;
   `;
   return db.query(query);
 };
 
 //retrieve the full content of a specific blog post, including comments
-const getPostById = (postId) => {
+const getPostByIdWithComments = (postId) => {
   const query = `
-    SELECT * FROM BlogPosts
-    WHERE PostID = $1;
+    SELECT 
+      bp.Title AS PostTitle,
+      bp.Content AS PostContent,
+      c.CommentID AS CommentID,
+      c.Text AS CommentText
+    FROM 
+      BlogPosts bp
+    LEFT JOIN 
+      Comments c ON bp.PostID = c.CommentPostID
+    WHERE 
+      bp.PostID = $1;
   `;
   return db.query(query, [postId]);
 };
+// const getPostById = (postId) => {
+//   const query = `
+//     SELECT * FROM BlogPosts
+//     WHERE PostID = $1;
+//   `;
+//   return db.query(query, [postId]);
+// };
 // Function to create a new blog post
 const createPost = (BlogPostUserID, Title, Content, Tags) => {
   const query = `
@@ -162,8 +191,8 @@ const deleteComment = (commentId) => {
 };
 module.exports = { 
   getUsers,getOnlyOneUser,
-  createUser,loginUser,getAllPosts,
-  getPostById,createPost,
+  createUser,loginUser,getAllPostsWithComments,
+  getPostByIdWithComments,createPost,
   updatePost,deletePost,
   getAllCommentsForPost,getCommentById,createComment,
   updateComment,deleteComment

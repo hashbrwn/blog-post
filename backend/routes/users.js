@@ -49,9 +49,9 @@ router.post('/login', (req, res) => {
       res.status(401).json({ error: error.message });
     });
 });
-
+// retrieve all posts 
 router.get('/posts', (req, res) => {
-  userinfo.getAllPosts()
+  userinfo.getAllPostsWithComments()
     .then((result) => {
       res.status(200).json(result.rows);
     })
@@ -60,10 +60,10 @@ router.get('/posts', (req, res) => {
       res.status(500).json({ error: "Failed to retrieve blog posts" });
     });
 });
-
+//get post by Id
 router.get('/posts/:postId', (req, res) => {
   const postId = req.params.postId;
-  userinfo.getPostById(postId)
+  userinfo.getPostByIdWithComments(postId)
     .then((result) => {
       if (result.rows.length === 0) {
         res.status(404).json({ error: "Post not found" });
@@ -76,6 +76,7 @@ router.get('/posts/:postId', (req, res) => {
       res.status(500).json({ error: "Failed to retrieve blog post" });
     });
 });
+//Create post 
 router.post('/createPost', (req, res) => {
  
   const { BlogPostUserID, Title, Content, Tags } = req.body;
@@ -135,7 +136,7 @@ router.get('/comments/:postId', (req, res) => {
     });
 });
 // Endpoint to handle creating a new comment
-router.post('/comments', (req, res) => {
+router.post('/createComment', (req, res) => {
   const { CommentUserID, CommentPostID, Text } = req.body;
 
   // Call the createComment function

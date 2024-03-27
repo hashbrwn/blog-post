@@ -8,3 +8,5 @@ CREATE TABLE BlogPosts (
     PublicationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (BlogPostUserID) REFERENCES Users(Id)
 );
+
+
