@@ -49,7 +49,8 @@ router.post('/login', (req, res) => {
       res.status(401).json({ error: error.message });
     });
 });
-// retrieve all posts 
+
+// retrieve all posts
 router.get('/posts', (req, res) => {
   userinfo.getAllPostsWithComments()
     .then((result) => {
@@ -76,9 +77,9 @@ router.get('/posts/:postId', (req, res) => {
       res.status(500).json({ error: "Failed to retrieve blog post" });
     });
 });
-//Create post 
+//Create post
 router.post('/createPost', (req, res) => {
- 
+
   const { BlogPostUserID, Title, Content, Tags } = req.body;
   userinfo.createPost(BlogPostUserID, Title, Content, Tags)
     .then((result) => {
