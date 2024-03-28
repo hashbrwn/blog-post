@@ -16,7 +16,7 @@ function Registration() {
 
     try {
       // POST request to backend 
-      const response = await axios.post('http://localhost:8080/users/register', { email, username, password});
+      const response = await axios.post('/users/register', { email, userName:username, password});
       // Handle successful registration 
       console.log('Registration successful', response.data);
     } catch (error) {
