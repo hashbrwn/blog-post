@@ -31,7 +31,6 @@ const createUser = (userName, email, password) => {
     RETURNING *;
   `;
 
-  console.log("++++++++++++", userName, email, password)
   // Check if user with the same email already exists
   return db.query(checkUserQuery, [email])
     .then((result) => {
@@ -47,9 +46,9 @@ const createUser = (userName, email, password) => {
 // function loginUser that authenticates a user
 const loginUser = (email, password) => {
   const loginQuery = `
-    SELECT * FROM Users ;
+    SELECT * FROM Users
     WHERE email = $1 ;
-    ` ;
+  `;
   // console.log("======", email, loginQuery)
 
   return db.query(loginQuery, [email])
@@ -65,27 +64,20 @@ const loginUser = (email, password) => {
       }
 
       return result.rows[0];
-
+     
     });
 };
 
 // Function to retrieve a list of all published blog posts
-// WHERE PublicationDate <= NOW();
-// const getAllPosts = () => {
-//   const query = `
-//     SELECT Title,Content FROM BlogPosts;
-//   `;
-//   return db.query(query);
-// };
 const getAllPostsWithComments = () => {
   const query = `
-    SELECT
+    SELECT 
       bp.Title AS PostTitle,
       bp.Content AS PostContent,
       c.Text AS CommentText
-    FROM
+    FROM 
       BlogPosts bp
-    LEFT JOIN
+    LEFT JOIN 
       Comments c ON bp.PostID = c.CommentPostID;
   `;
   return db.query(query);
@@ -94,27 +86,21 @@ const getAllPostsWithComments = () => {
 //retrieve the full content of a specific blog post, including comments
 const getPostByIdWithComments = (postId) => {
   const query = `
-    SELECT
+    SELECT 
       bp.Title AS PostTitle,
       bp.Content AS PostContent,
       c.CommentID AS CommentID,
       c.Text AS CommentText
-    FROM
+    FROM 
       BlogPosts bp
-    LEFT JOIN
+    LEFT JOIN 
       Comments c ON bp.PostID = c.CommentPostID
-    WHERE
+    WHERE 
       bp.PostID = $1;
   `;
   return db.query(query, [postId]);
 };
-// const getPostById = (postId) => {
-//   const query = `
-//     SELECT * FROM BlogPosts
-//     WHERE PostID = $1;
-//   `;
-//   return db.query(query, [postId]);
-// };
+
 // Function to create a new blog post
 const createPost = (BlogPostUserID, Title, Content, Tags) => {
   const query = `
@@ -143,10 +129,57 @@ const deletePost = (postId) => {
   `;
   return db.query(query, [postId]);
 };
-module.exports = {
+// Function to retrieve all comments for a specific blog post
+const getAllCommentsForPost = (postId) => {
+  const query = `
+    SELECT * FROM Comments
+    WHERE CommentPostID = $1;
+  `;
+  return db.query(query, [postId]);
+};
+// Function to retrieve a specific comment by its ID
+const getCommentById = (commentId) => {
+  const query = `
+    SELECT * FROM Comments
+    WHERE CommentID = $1;
+  `;
+  return db.query(query, [commentId]);
+};
+
+// Function to create a new comment
+const createComment = (CommentUserID, CommentPostID, Text) => {
+  const query = `
+    INSERT INTO Comments (CommentUserID, CommentPostID, Text)
+    VALUES ($1, $2, $3)
+    RETURNING *;
+  `;
+  return db.query(query, [CommentUserID, CommentPostID, Text]);
+};
+
+// Function to update an existing comment
+const updateComment = (commentId, Text) => {
+  const query = `
+    UPDATE Comments
+    SET Text = $1
+    WHERE CommentID = $2
+    RETURNING *;
+  `;
+  return db.query(query, [Text, commentId]);
+};
+
+// Function to delete an existing comment
+const deleteComment = (commentId) => {
+  const query = `
+    DELETE FROM Comments
+    WHERE CommentID = $1
+    RETURNING *;
+  `;
+  return db.query(query, [commentId]);
+};
+module.exports = { 
   getUsers,getOnlyOneUser,
   createUser,loginUser,getAllPostsWithComments,
-  getPostByIdWithComments,createPost,
+getPostByIdWithComments,createPost,
   updatePost,deletePost,
   getAllCommentsForPost,getCommentById,createComment,
   updateComment,deleteComment
