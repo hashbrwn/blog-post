@@ -7,9 +7,9 @@ REGISTER
 
 # Blog Posts
 BROWSE
-- GET /api/posts                    <!-- Retrieve a list of all published blog posts --> <!-- Done✅✅ -->
+- GET /api/posts        <!-- Retrieve a list of all published blog posts with their comments --> <!-- Done✅✅ -->
 READ
-- GET /api/posts/:postId           <!-- Retrieve the full content of a specific blog post, including comments -->
+- GET /api/posts/:postId           <!-- Retrieve  blog post, including comments --> 
 CREATE
 - POST /api/posts                  <!-- Create a new blog post --> <!-- Done✅✅ -->
 UPDATE
@@ -22,7 +22,7 @@ DELETE
 BROWSE
 - GET /api/comments/:postId            <!-- Retrieve a list of all published blog posts --> <!-- Done✅✅ -->
 READ
-- GET /api/comment/:postId                <!-- Retrieve a specific comment>
+- GET /api/comment/:postId                <!-- Retrieve a specific comment --> <!-- Done✅✅ --> 
 CREATE
 - POST /api/createComment              <!-- Create a new comment --> <!-- Done✅✅ -->
 UPDATE
