@@ -32,17 +32,18 @@ function BlogPostsList() {
             ) : error ? (
                 <p>{error}</p> 
             ) : (
-                <ul>
-                    {posts.map(post => (
-                        <li key={post.PostID}>
-                            <h2>{post.title}</h2>
-                            {/* Display an excerpt and a link to the full post */}
-                            <p>{post.content.substring(0, 100)}...</p>
-                            {/* Use React Router's Link component for navigation */}
-                            <Link to={`/posts/${post.PostID}`}>Read more</Link>
-                        </li>
-                    ))}
-                </ul>
+              <ul>
+    {posts.map(post => (
+        <li key={post.PostID}>
+            <h2>{post.Title}</h2>
+            {/* Display an excerpt and a link to the full post */}
+            <p>{post.Content.substring(0, 100)}...</p>
+            {/* Use React Router's Link component for navigation */}
+            <Link to={`/posts/${post.PostID}`}>Read more</Link>
+        </li>
+    ))}
+</ul>
+
             )}
         </div>
     );
